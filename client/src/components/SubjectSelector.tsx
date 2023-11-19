@@ -8,19 +8,27 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { AsyncThunkAction, Dispatch, AnyAction } from "@reduxjs/toolkit";
 import { Checkbox } from "@mui/material";
 import styles from "./SubjectSelector.module.scss";
-import { setSubjects } from "../features/search/searchSlice";
+import { SearchSelector, setSubjects } from "../features/search/searchSlice";
+import { getGridSingleSelectOperators } from "@mui/x-data-grid";
 
 export function SubjectSelector() {
   const [metadata, setMetadata] = useState<Array<User>>([]);
   const selectorInit = useAppSelector(initSelector);
+  const selectorSearch = useAppSelector(SearchSelector);
+
   const dispatch = useAppDispatch();
 
-  const aggs = selectorInit?.metadata;
+  const subjects = selectorInit?.metadata?.subjects || [];
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     //  if (e == null) return;
+
     console.log(e.target.value);
-    dispatch(setSubjects(e.target.value));
+    dispatch(setSubjects(e.target.id));
+  };
+
+  const isSelected = (a: string) => {
+    return selectorSearch?.selectedSubjects?.includes(a);
   };
 
   return (
@@ -29,14 +37,16 @@ export function SubjectSelector() {
       <div className={styles.aggsGroupBox}>
         <br />
         <Box sx={{ flexGrow: 1 }}>
-          {aggs.map((a) => (
-            <div key={a.id}>
+          {subjects.map((a) => (
+            <div key={a}>
               <Checkbox
-                value={a.email}
+                checked={isSelected(a)}
                 className={styles.aggCheck}
+                id={a}
+                name={a}
                 onChange={(e) => onChange(e)}
               />
-              {a.email}
+              {a}
             </div>
           ))}
         </Box>

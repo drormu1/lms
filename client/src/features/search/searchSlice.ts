@@ -48,8 +48,18 @@ const searchSlice = createSlice({
             existKey ? state.selectedSubjects.push(key) : state.selectedSubjects.splice(existKey, 1);
             console.log('subject : ' + action.payload);
         },
+
+        clearAllAggs: (state) => {
+            state.selectedSubjects = [];
+            state.term = '';
+        },
+
+        submitAggs: (state) => {
+            // state.selectedSubjects = [];
+            // state.term = '';
+        },
     },
 })
 export const SearchSelector = (state: RootState) => state.searchReducer;
-export const { setTerm, setSubjects } = searchSlice.actions;
+export const { setTerm, setSubjects, clearAllAggs, submitAggs } = searchSlice.actions;
 export default searchSlice.reducer;

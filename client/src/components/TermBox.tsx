@@ -41,6 +41,7 @@ export function TermBox() {
         label=""
         multiline
         maxRows={8}
+        value={selectorSearch.term}
       />
     </>
   );
