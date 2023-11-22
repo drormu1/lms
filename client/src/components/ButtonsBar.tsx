@@ -4,12 +4,16 @@ import { TextField, FormControl, Typography, Button } from "@mui/material";
 import styles from "./ButtonsBar.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useAppDispatch } from "../store/store";
-import { clearAllAggs, submitAggs } from "../features/search/searchSlice";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import {
+  SearchSelector,
+  clearAllAggs,
+  fetchSearch,
+} from "../features/search/searchSlice";
 //import "./SearchPanel.css";
 export function ButtonsBar() {
   const dispatch = useAppDispatch();
-
+  const selectorSearch = useAppSelector(SearchSelector);
   const clearAggs = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     //  if (e == null) return;
@@ -20,7 +24,8 @@ export function ButtonsBar() {
     e.preventDefault();
     //  if (e == null) return;
     console.log("submitAggs " + e.target);
-    dispatch(submitAggs());
+
+    dispatch(fetchSearch(selectorSearch));
   };
 
   return (

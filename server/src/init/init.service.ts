@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { Metadata } from 'src/models/metadata';
+import { Metadata } from '../../../shared/Metadata';
 
 @Injectable()
 export class InitService {

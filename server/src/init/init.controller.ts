@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { Controller, Get } from '@nestjs/common';
 import { Subject } from 'rxjs';
-import { Metadata } from 'src/models/metadata';
+import { Metadata } from '../../../shared/Metadata';
 import { InitService } from './init.service';
 const axios = require('axios');
 

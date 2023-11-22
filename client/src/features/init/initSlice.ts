@@ -1,28 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store/store";
+import { Metadata } from '../../../../shared/Metadata';
+import { InitState } from '../../../../shared/InitState';
 
-export interface User {
-    id: number,
-    name: string,
-    email: string
-}
-export interface InitState {
-    loading: boolean;
-    metadata: Metadata | undefined;
-    error: string | undefined;
-}
+
 const initialState: InitState = {
     loading: false,
     metadata: undefined,
     error: undefined,
 }
 
-export interface Metadata {
-    userId: string | undefined;
-    subjects: Array<string>;
-    comments: Array<string>;
-
-}
 
 export const fetchInit = createAsyncThunk(
     "init/fetchInit",
@@ -32,6 +19,7 @@ export const fetchInit = createAsyncThunk(
         return res;
     }
 )
+
 const initSlice = createSlice({
     name: 'init',
     initialState,
