@@ -12,10 +12,8 @@ import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 export default function ParentCard() {
   const selectorSearch = useAppSelector(SearchSelector);
 
-  const rowId =
-    selectorSearch?.selectedRow != undefined
-      ? selectorSearch?.selectedRow
-      : undefined;
+  const rowId = selectorSearch?.selectedRowInGrid;
+
   const row = selectorSearch?.results?.find((row) => row.id == rowId);
 
   useEffect(() => {

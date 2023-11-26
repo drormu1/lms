@@ -11,13 +11,10 @@ import axios from 'axios';
 const initialState: ISearchState = {
     results: [],
     term: "כהן",
-    selectedSubjects: [],
-    selectedRow: undefined,
+    selectedCities: [],
     total: 0,
     page: 0,
     size: 10,
-    subjects: [],
-
 }
 
 //GET
@@ -86,21 +83,20 @@ const searchSlice = createSlice({
             console.log('term : ' + action.payload);
             state.term = action.payload;
         },
-        setSubjects: (state, action: PayloadAction<string>) => {
+        setCities: (state, action: PayloadAction<string>) => {
             const key = action.payload;
-            var existKey = state.selectedSubjects.indexOf(key);
-            existKey ? state.selectedSubjects.push(key) : state.selectedSubjects.splice(existKey, 1);
+            var existKey = state.selectedCities.indexOf(key);
+            existKey ? state.selectedCities.push(key) : state.selectedCities.splice(existKey, 1);
             console.log('subject : ' + action.payload);
         },
 
         clearAllAggs: (state) => {
-            state.selectedRow = undefined;
-            state.selectedSubjects = [];
+            state.selectedCities = [];
             state.term = '';
             state.results = [];
         },
         setSelectedRow: (state, action: PayloadAction<number>) => {
-            state.selectedRow = action.payload;
+            state.selectedRowInGrid = action.payload;
 
         },
 
@@ -128,12 +124,12 @@ const searchSlice = createSlice({
             //state.loading = false;
             state.total = 0;
             state.results = [];
-            state.selectedRow = undefined;
+            //state.selectedRow = undefined;
             //state.error = action.error.message;
         });
     },
 
 })
 export const SearchSelector = (state: RootState) => state.searchReducer;
-export const { setTerm, setSubjects, clearAllAggs, setSelectedRow } = searchSlice.actions;
+export const { setTerm, setCities, clearAllAggs, setSelectedRow } = searchSlice.actions;
 export default searchSlice.reducer;

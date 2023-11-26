@@ -30,7 +30,7 @@ import { SearchSelector, setSelectedRow } from "../features/search/searchSlice";
 // ];
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "מזהה", width: 130 },
+  { field: "id", headerName: "מזהה", width: 230 },
   { field: "name", headerName: "שם", width: 130 },
   { field: "rank", headerName: "דרגה", width: 130 },
   { field: "city", headerName: "עיר", width: 130 },

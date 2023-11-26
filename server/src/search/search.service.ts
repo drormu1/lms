@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { ISearchResponse } from '../../../shared/ISearchResponse';
 import { ISearchRequest } from '../../../shared/ISearchRequest';
+import { Config } from '../../../shared/Config';
 
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { Client } from '@elastic/elasticsearch';
@@ -14,7 +15,7 @@ export class SearchService {
   constructor(private readonly elasticsearchService: ElasticsearchService) {}
  
  
-  readonly fields : string[] = ['full_name_fd','rank','birth_city']
+  readonly fields : string[] = Config.fields
 
   readonly client = new Client({
     node: 'http://localhost:9200',
@@ -34,7 +35,7 @@ export class SearchService {
 
     async search(searchRequest: ISearchRequest):Promise<ISearchResponse> {
       try {
-        const indexName = 'fabric_person';
+        const indexName = Config.indexName
         const searchResponse : ISearchResponse = {results:[],total:0};
         //const searchRequest : SearchRequest 
 
@@ -97,7 +98,7 @@ export class SearchService {
                 id:h._id,
                 name:h.fields.full_name_fd[0],
                 rank:h.fields.rank[0],
-                birth:h.fields.birth_city[0]}});
+                city:h.fields.birth_city[0]}});
 
             searchResponse.total= data.body.hits.total as number;
             console.log('total ' ,searchResponse.total);

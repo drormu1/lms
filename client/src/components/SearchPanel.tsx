@@ -22,7 +22,7 @@ import { Divider } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 import { makeStyles } from "@mui/styles";
-import { SubjectSelector } from "./SubjectSelector";
+import { CitiesBox } from "./CitiesBox";
 import { ButtonsBar } from "./ButtonsBar";
 import { TermBox } from "./TermBox";
 //import "./SearchPanel.css";
@@ -59,7 +59,7 @@ function SearchPanel() {
 
           <TermBox></TermBox>
           <br />
-          <SubjectSelector></SubjectSelector>
+          <CitiesBox></CitiesBox>
 
           <ButtonsBar></ButtonsBar>
         </FormControl>
