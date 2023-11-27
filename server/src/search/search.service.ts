@@ -18,7 +18,7 @@ export class SearchService {
   readonly fields : string[] = Config.fields
 
   readonly client = new Client({
-    node: 'http://localhost:9200',
+    node: Config.elasticUrl,
     requestTimeout: 60000,
   });
   
