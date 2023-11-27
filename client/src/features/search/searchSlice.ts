@@ -15,6 +15,7 @@ const initialState: ISearchState = {
     total: 0,
     page: 0,
     size: 10,
+    selectedRowInGrid: 0
 }
 
 //GET
