@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useState, useEffect, ChangeEvent } from "react";
-import { fetchInit, initSelector } from "../features/init/initSlice";
+import { fetchInit, metadataSelector } from "../features/init/initSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { AsyncThunkAction, Dispatch, AnyAction } from "@reduxjs/toolkit";
 import { Checkbox, TextField } from "@mui/material";
@@ -14,7 +14,7 @@ import _ from "lodash";
 
 export function MultiSelect(props: any) {
   //const [metadata, setMetadata] = useState<Array<User>>([]);
-  const selectorInit = useAppSelector(initSelector);
+  const selectorMetadata = useAppSelector(metadataSelector);
   const selectedAggsSelector = useAppSelector(SelectedAggsSelector);
 
   const dispatch = useAppDispatch();
@@ -22,7 +22,7 @@ export function MultiSelect(props: any) {
   const [minifier, setMinifer] = useState<string>("");
   // const [values, setValues] = useState<Array<string>>([]);
   // setValues(selectorInit?.metadata?.aggregations[props.agg] || []);
-  let values = selectorInit?.metadata?.aggregations[props.agg] || [];
+  let values = selectorMetadata?.aggregations[props.agg] || [];
   console.log("values: MultiSelect " + values.length);
   // useEffect(() => {
   //   if (!_.isEmpty(minifier)) {

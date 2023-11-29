@@ -1,10 +1,14 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { TextField, FormControl, Typography, Button } from "@mui/material";
 import styles from "./TermBox.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { TermSelector, setTerm } from "../features/search/searchSlice";
+import {
+  TermSelector,
+  fetchSearch,
+  setTerm,
+} from "../features/search/searchSlice";
 import searchSlice from "../features/search/searchSlice";
 //import "./SearchPanel.css";
 export function TermBox() {
@@ -25,6 +29,15 @@ export function TermBox() {
     console.log(e.target.value);
     dispatch(setTerm(e.target.value));
   };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode == 13) {
+      e.preventDefault();
+      e.stopPropagation();
+      dispatch(fetchSearch(null));
+    }
+  };
+
   return (
     <>
       <Typography className={styles.legendLabel}>תאור וכותרת</Typography>
@@ -36,6 +49,7 @@ export function TermBox() {
           },
         }}
         onChange={onChange}
+        onKeyDown={handleKeyDown}
         id="outlined-multiline-flexible"
         variant="outlined"
         label=""

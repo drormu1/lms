@@ -6,7 +6,7 @@ import searchReducer from '../features/search/searchSlice';
 
 export const store = configureStore({
     reducer: {
-        initReducer: initReducer,
+        init: initReducer,
         search: searchReducer,
     },
 });

@@ -41,5 +41,8 @@ const initSlice = createSlice({
 })
 
 
-export const initSelector = (state: RootState) => state.initReducer;
+
+export const metadataSelector = (state: RootState) => state.init.metadata;
+export const loadingSelector = (state: RootState) => state.init.loading;
+
 export default initSlice.reducer;
