@@ -42,7 +42,7 @@ export class InitService {
   }
 
        
-   async getAllAggregations() : Promise<any> {
+  async getAllAggregations() : Promise<any> {
 
     const results = {cities:[],ranks:[]}; 
  

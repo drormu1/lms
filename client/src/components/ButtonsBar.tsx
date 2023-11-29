@@ -10,22 +10,30 @@ import {
   clearAllAggs,
   fetchSearch,
 } from "../features/search/searchSlice";
+import { ISearchRequest } from "../../../shared/ISearchRequest";
 //import "./SearchPanel.css";
 export function ButtonsBar() {
   const dispatch = useAppDispatch();
-  const selectorSearch = useAppSelector(SearchSelector);
+  const searchState = useAppSelector(SearchSelector);
+
   const clearAggs = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     //  if (e == null) return;
     console.log("clearAggs " + e.target);
     dispatch(clearAllAggs());
   };
+
   const submitAllAggs = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     //  if (e == null) return;
     console.log("submitAggs " + e.target);
-
-    dispatch(fetchSearch(selectorSearch));
+    // var request: ISearchRequest = {
+    //   term: searchState.term,
+    //   selectedAggs: searchState.selectedAggs,
+    //   page: searchState.page,
+    //   size: searchState.size,
+    // };
+    dispatch(fetchSearch(null));
   };
 
   return (

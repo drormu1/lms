@@ -32,7 +32,7 @@ export function TermBox() {
         inputProps={{
           style: {
             height: "70px",
-            padding: 0,
+            margin: "-5px -5px -5px -5px",
           },
         }}
         onChange={onChange}

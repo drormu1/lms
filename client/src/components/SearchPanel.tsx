@@ -22,7 +22,7 @@ import { Divider } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 import { makeStyles } from "@mui/styles";
-import { CitiesBox } from "./CitiesBox";
+
 import { ButtonsBar } from "./ButtonsBar";
 import { TermBox } from "./TermBox";
 import { MultiSelect } from "./MultiSelect";

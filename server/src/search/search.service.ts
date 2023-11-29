@@ -35,14 +35,10 @@ export class SearchService {
 
     async search(searchRequest: ISearchRequest):Promise<ISearchResponse> {
       try {
-        const indexName = Config.indexName
+        const indexName = Config.indexName;
+        console.log('searchRequest:' , searchRequest)
         const searchResponse : ISearchResponse = {results:[],total:0};
-        //const searchRequest : SearchRequest 
-
-        // searchRequest.term = searchRequest.term;
-        // searchRequest.page = searchRequest.page;
-        // searchRequest.size = searchRequest.size;
-        console.log('searchRequest :' , searchRequest);
+        
         searchRequest.term = _.trim( searchRequest.term);
         if( searchRequest.term.startsWith('"') && searchRequest.term.endsWith('"'))
         {
@@ -96,17 +92,22 @@ export class SearchService {
             searchResponse.results=  data.body.hits.hits.map(h => { 
               return {
                 id:h._id,
-                name:h.fields.full_name_fd[0],
-                rank:h.fields.rank[0],
-                city:h.fields.birth_city[0]}});
+                name: h.fields.full_name_fd.length > 0 ? h.fields.full_name_fd[0] : '',
+                rank:h.fields.rank && h.fields.rank.length > 0 ? h.fields.rank[0] : '',
+                city: h.fields.birth_city && h.fields.birth_city.length > 0 ? h.fields.birth_city[0] : ''
+              }
+            
 
-            searchResponse.total= data.body.hits.total as number;
-            console.log('total ' ,searchResponse.total);
-
-          return searchResponse;
+            //console.log('total ' ,searchResponse.total);
+            });
+            const t =  data.body.hits.total as any ;
+            searchResponse.total= t.value as number;
+          
+            return searchResponse;
         })
         .catch(e=>{
           //Logger.error(e.meta.meta.request.params.path + "***************" + e.meta.meta.request.params.body);
+          console.error(e);
           console.error(e.meta.meta.request.params.path + "***************" + e.meta.meta.request.params.body);        
         });
   

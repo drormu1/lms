@@ -7,7 +7,9 @@ import {
 } from "@mui/x-data-grid";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { SearchSelector, setSelectedRow } from "../features/search/searchSlice";
-
+import { heIL } from "@mui/x-data-grid";
+import { heIL as pickersHeIL } from "@mui/x-date-pickers/locales";
+import { heIL as coreHeIL } from "@mui/material/locale";
 // const columns: GridColDef[] = [
 //   { field: "id", headerName: "ID", width: 70 },
 //   { field: "firstName", headerName: "First name", width: 130 },
@@ -49,15 +51,16 @@ export default function Results() {
   return (
     <div style={{ height: "90vh", width: "100%" }}>
       <DataGrid
+        localeText={heIL.components.MuiDataGrid.defaultProps.localeText}
         rows={results}
         onRowClick={handleRowClick}
         columns={columns}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
+            paginationModel: { page: 0, pageSize: 100 },
           },
         }}
-        pageSizeOptions={[10, 100]}
+        pageSizeOptions={[100, 10]}
       />
     </div>
   );

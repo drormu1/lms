@@ -1,6 +1,9 @@
-export interface ISearchRequest {    
+import { ISelectedAggs } from "./ISelectedAggs";
+
+
+export interface ISearchRequest {
     term: string;
     page: number;
-    size: number;    
-    selectedSubjects: Array<string>;    
+    size: number;
+    selectedAggs: ISelectedAggs;
 }

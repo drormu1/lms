@@ -39,5 +39,7 @@ const initSlice = createSlice({
     },
     reducers: {}
 })
+
+
 export const initSelector = (state: RootState) => state.initReducer;
 export default initSlice.reducer;

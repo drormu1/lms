@@ -1,16 +1,13 @@
-export interface ISearchState {
-    results: Array<string>;
-    selectedAggs: ISelectedAggs;
-    selectedCities: Array<string>;
+import { ISelectedAggs } from "./ISelectedAggs";
 
+export interface ISearchState {
+       
     total: number;
     term: string;
     page: number;
     size: number;
+    results: Array<string>;
     selectedRowInGrid: number;
+    selectedAggs: ISelectedAggs;
 }
 
-export interface ISelectedAggs {
-    [agg: string]: string[];
-
-}

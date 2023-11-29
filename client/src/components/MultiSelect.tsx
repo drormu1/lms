@@ -6,10 +6,11 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { fetchInit, initSelector } from "../features/init/initSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { AsyncThunkAction, Dispatch, AnyAction } from "@reduxjs/toolkit";
-import { Checkbox } from "@mui/material";
+import { Checkbox, TextField } from "@mui/material";
 import styles from "./MultiSelect.module.scss";
 import { SearchSelector, setAggs } from "../features/search/searchSlice";
 import { getGridSingleSelectOperators } from "@mui/x-data-grid";
+import _ from "lodash";
 
 export function MultiSelect(props: any) {
   //const [metadata, setMetadata] = useState<Array<User>>([]);
@@ -18,10 +19,20 @@ export function MultiSelect(props: any) {
 
   const dispatch = useAppDispatch();
 
-  const values = selectorInit?.metadata?.aggregations[props.agg] || [];
-  //console.log("values" + values);
-
-  //const cities = selectorInit?.metadata?.aggregations.cities || [];
+  const [minifier, setMinifer] = useState<string>("");
+  // const [values, setValues] = useState<Array<string>>([]);
+  // setValues(selectorInit?.metadata?.aggregations[props.agg] || []);
+  let values = selectorInit?.metadata?.aggregations[props.agg] || [];
+  console.log("values: MultiSelect " + values.length);
+  // useEffect(() => {
+  //   if (!_.isEmpty(minifier)) {
+  //     //setValues(values.filter((str: string) => str.includes(minifier)));
+  //     values = values.filter((str: string) => str.includes(minifier));
+  //   }
+  //   // else {
+  //   //   setValues(selectorInit?.metadata?.aggregations[props.agg] || []);
+  //   // }
+  // }, [minifier]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     //  if (e == null) return;
@@ -31,28 +42,51 @@ export function MultiSelect(props: any) {
   };
 
   const isSelected = (a: string) => {
-    const agg = props.agg;
-    return selectorSearch?.selectedAggs[agg]?.includes(a);
+    if (
+      Object.keys(selectorSearch?.selectedAggs).length > 0 &&
+      selectorSearch?.selectedAggs[props.agg]?.length > 0
+    ) {
+      //console.log("a: " + a);
+      return selectorSearch?.selectedAggs[props.agg]?.includes(a);
+    } else return false;
   };
 
   return (
     <>
-      <Typography className={styles.legendLabel}>{props.title}</Typography>
+      <div>
+        <span className={styles.legendLabel}>
+          {props.title}({values.length})
+        </span>
+        <input
+          id="filter_{props.agg}"
+          placeholder="מקד"
+          style={{
+            float: "left",
+            border: "1px solid rgba(0, 0, 0, .1)",
+            borderRadius: "3px",
+            marginBottom: "3px",
+          }}
+          value={minifier}
+          onChange={(e) => setMinifer(e.target.value)}
+        />
+      </div>
       <div className={styles.aggsGroupBox}>
         <br />
         <Box sx={{ flexGrow: 1 }}>
-          {values.map((a) => (
-            <div key={a}>
-              <Checkbox
-                checked={isSelected(a)}
-                className={styles.aggCheck}
-                id={a}
-                name={a}
-                onChange={(e) => onChange(e)}
-              />
-              {a}
-            </div>
-          ))}
+          {values
+            .filter((str: string) => str.includes(minifier))
+            .map((a) => (
+              <div key={a}>
+                <Checkbox
+                  checked={isSelected(a)}
+                  className={styles.aggCheck}
+                  id={a}
+                  name={a}
+                  onChange={(e) => onChange(e)}
+                />
+                {a}
+              </div>
+            ))}
         </Box>
       </div>
     </>

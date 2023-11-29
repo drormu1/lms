@@ -2,30 +2,42 @@ import { Paper } from '@mui/material';
 import { fetchInit } from './../init/initSlice';
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store/store";
-import { ISearchState, ISelectedAggs } from '../../../../shared/ISearchState';
+import { ISearchState } from '../../../../shared/ISearchState';
+
 import { ISearchRequest } from '../../../../shared/ISearchRequest';
 import { ISearchResponse } from '../../../../shared/ISearchResponse';
 
 import axios from 'axios';
+import { ConstructionOutlined } from '@mui/icons-material';
+import { BaseThunkAPI, GetThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk';
 
 const initialState: ISearchState = {
     results: [],
     term: "כהן",
-    selectedCities: [],
+
     total: 0,
     page: 0,
-    size: 10,
+    size: 100,
     selectedRowInGrid: 0,
     selectedAggs: {},
+
 }
 
 export const fetchSearch = createAsyncThunk(
     "search/fetchSearch",
 
-    async (searchRequest: ISearchRequest) => {
+    async (req2: any, thunkApi: any) => {
         try {
             const url = import.meta.env.VITE_API_URL as string;
-            const response = await axios.post(`${url}/search`, searchRequest as ISearchRequest)
+            var state = thunkApi.getState();
+            var req: ISearchRequest = {
+                term: state.searchReducer.term,
+                page: state.searchReducer.page,
+                size: state.searchReducer.size,
+                selectedAggs: state.searchReducer.selectedAggs
+            }
+            const response = await axios.post(`${url}/search`, req);
+            console.log('searchRequest:', req)
             return response.data
         } catch (err) {
             // custom error
@@ -42,12 +54,7 @@ const searchSlice = createSlice({
             console.log('term : ' + action.payload);
             state.term = action.payload;
         },
-        setCities: (state, action: PayloadAction<string>) => {
-            const key = action.payload;
-            var existKey = state.selectedCities.indexOf(key);
-            existKey ? state.selectedCities.push(key) : state.selectedCities.splice(existKey, 1);
-            console.log('checked : ' + action.payload);
-        },
+
 
         setAggs: (state, action: PayloadAction<any>) => {
             console.log('checked : ' + action.payload);
@@ -66,8 +73,8 @@ const searchSlice = createSlice({
         },
 
         clearAllAggs: (state) => {
-            state.selectedCities = [];
-            state.selectedAggs
+
+            state.selectedAggs = {};
             state.term = '';
             //state.results = [];
         },
@@ -106,8 +113,16 @@ const searchSlice = createSlice({
     },
 
 })
+export const ResultsSelector = (state: RootState) => state.searchReducer.results;
+export const TotalSelector = (state: RootState) => state.searchReducer.total;
+export const PageSelector = (state: RootState) => state.searchReducer.page;
+export const SizeSelector = (state: RootState) => state.searchReducer.size;
+export const SelectedRowSelector = (state: RootState) => state.searchReducer.selectedRowInGrid;
+export const SelectedAggsSelector = (state: RootState) => state.searchReducer.selectedAggs;
+export const TermSelector = (state: RootState) => state.searchReducer.term;
+
 export const SearchSelector = (state: RootState) => state.searchReducer;
-export const { setTerm, setCities, clearAllAggs, setSelectedRow, setAggs } = searchSlice.actions;
+export const { setTerm, clearAllAggs, setSelectedRow, setAggs } = searchSlice.actions;
 export default searchSlice.reducer;
 
 
