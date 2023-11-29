@@ -6,7 +6,10 @@ import {
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { SearchSelector, setSelectedRow } from "../features/search/searchSlice";
+import {
+  ResultsSelector,
+  setSelectedRow,
+} from "../features/search/searchSlice";
 import { heIL } from "@mui/x-data-grid";
 import { heIL as pickersHeIL } from "@mui/x-date-pickers/locales";
 import { heIL as coreHeIL } from "@mui/material/locale";
@@ -40,8 +43,7 @@ const columns: GridColDef[] = [
 
 export default function Results() {
   const dispatch = useAppDispatch();
-  const selectorSearch = useAppSelector(SearchSelector);
-  const results = selectorSearch?.results || [];
+  const resultsSelector = useAppSelector(ResultsSelector);
 
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
     console.log(`Movie "${params.row.id}" clicked`);
@@ -52,7 +54,7 @@ export default function Results() {
     <div style={{ height: "90vh", width: "100%" }}>
       <DataGrid
         localeText={heIL.components.MuiDataGrid.defaultProps.localeText}
-        rows={results}
+        rows={resultsSelector}
         onRowClick={handleRowClick}
         columns={columns}
         initialState={{

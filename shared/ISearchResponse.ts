@@ -1,5 +1,5 @@
 export interface ISearchResponse {
     total: number;
-    results: any;      
+    results: [];      
     
 }

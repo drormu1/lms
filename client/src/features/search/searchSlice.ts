@@ -18,7 +18,7 @@ const initialState: ISearchState = {
     total: 0,
     page: 0,
     size: 100,
-    selectedRowInGrid: 0,
+    selectedRowInGrid: '',
     selectedAggs: {},
 
 }
@@ -31,16 +31,16 @@ export const fetchSearch = createAsyncThunk(
             const url = import.meta.env.VITE_API_URL as string;
             var state = thunkApi.getState();
             var req: ISearchRequest = {
-                term: state.searchReducer.term,
-                page: state.searchReducer.page,
-                size: state.searchReducer.size,
-                selectedAggs: state.searchReducer.selectedAggs
+                term: state.search.term,
+                page: state.search.page,
+                size: state.search.size,
+                selectedAggs: state.search.selectedAggs
             }
             const response = await axios.post(`${url}/search`, req);
             console.log('searchRequest:', req)
             return response.data
         } catch (err) {
-            // custom error
+            console.log('searchRequest err:', err);
         }
     }
 )
@@ -78,19 +78,10 @@ const searchSlice = createSlice({
             state.term = '';
             //state.results = [];
         },
-        setSelectedRow: (state, action: PayloadAction<number>) => {
+        setSelectedRow: (state, action: PayloadAction<string>) => {
             state.selectedRowInGrid = action.payload;
 
         },
-
-        // submitAggs: (state) => {
-        //     fetchSearch()
-        //     debugger
-
-        //     // state.selectedSubjects = [];
-        //     // state.term = '';
-        // },
-
 
     },
     extraReducers: (builder) => {
@@ -113,15 +104,15 @@ const searchSlice = createSlice({
     },
 
 })
-export const ResultsSelector = (state: RootState) => state.searchReducer.results;
-export const TotalSelector = (state: RootState) => state.searchReducer.total;
-export const PageSelector = (state: RootState) => state.searchReducer.page;
-export const SizeSelector = (state: RootState) => state.searchReducer.size;
-export const SelectedRowSelector = (state: RootState) => state.searchReducer.selectedRowInGrid;
-export const SelectedAggsSelector = (state: RootState) => state.searchReducer.selectedAggs;
-export const TermSelector = (state: RootState) => state.searchReducer.term;
+export const ResultsSelector = (state: RootState) => state.search.results;
+export const TotalSelector = (state: RootState) => state.search.total;
+export const PageSelector = (state: RootState) => state.search.page;
+export const SizeSelector = (state: RootState) => state.search.size;
+export const SelectedRowSelector = (state: RootState) => state.search.selectedRowInGrid;
+export const SelectedAggsSelector = (state: RootState) => state.search.selectedAggs;
+export const TermSelector = (state: RootState) => state.search.term;
 
-export const SearchSelector = (state: RootState) => state.searchReducer;
+//export const SearchSelector = (state: RootState) => state.searchReducer;
 export const { setTerm, clearAllAggs, setSelectedRow, setAggs } = searchSlice.actions;
 export default searchSlice.reducer;
 

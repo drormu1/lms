@@ -5,16 +5,12 @@ import styles from "./ButtonsBar.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import {
-  SearchSelector,
-  clearAllAggs,
-  fetchSearch,
-} from "../features/search/searchSlice";
+import { clearAllAggs, fetchSearch } from "../features/search/searchSlice";
 import { ISearchRequest } from "../../../shared/ISearchRequest";
 //import "./SearchPanel.css";
 export function ButtonsBar() {
   const dispatch = useAppDispatch();
-  const searchState = useAppSelector(SearchSelector);
+  //const searchState = useAppSelector(SearchSelector);
 
   const clearAggs = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();

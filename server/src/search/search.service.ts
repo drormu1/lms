@@ -98,8 +98,9 @@ export class SearchService {
               }
             
 
-            //console.log('total ' ,searchResponse.total);
+            
             });
+            console.log('total :' ,searchResponse.total);
             const t =  data.body.hits.total as any ;
             searchResponse.total= t.value as number;
           

@@ -4,12 +4,12 @@ import styles from "./TermBox.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { SearchSelector, setTerm } from "../features/search/searchSlice";
+import { TermSelector, setTerm } from "../features/search/searchSlice";
 import searchSlice from "../features/search/searchSlice";
 //import "./SearchPanel.css";
 export function TermBox() {
   //const [term, setTerm] = useState<string>();
-  const selectorSearch = useAppSelector(SearchSelector);
+  const selectorSearch = useAppSelector(TermSelector);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export function TermBox() {
         label=""
         multiline
         maxRows={8}
-        value={selectorSearch.term}
+        value={selectorSearch}
       />
     </>
   );

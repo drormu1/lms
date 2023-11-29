@@ -8,14 +8,14 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { AsyncThunkAction, Dispatch, AnyAction } from "@reduxjs/toolkit";
 import { Checkbox, TextField } from "@mui/material";
 import styles from "./MultiSelect.module.scss";
-import { SearchSelector, setAggs } from "../features/search/searchSlice";
+import { SelectedAggsSelector, setAggs } from "../features/search/searchSlice";
 import { getGridSingleSelectOperators } from "@mui/x-data-grid";
 import _ from "lodash";
 
 export function MultiSelect(props: any) {
   //const [metadata, setMetadata] = useState<Array<User>>([]);
   const selectorInit = useAppSelector(initSelector);
-  const selectorSearch = useAppSelector(SearchSelector);
+  const selectedAggsSelector = useAppSelector(SelectedAggsSelector);
 
   const dispatch = useAppDispatch();
 
@@ -43,12 +43,14 @@ export function MultiSelect(props: any) {
 
   const isSelected = (a: string) => {
     if (
-      Object.keys(selectorSearch?.selectedAggs).length > 0 &&
-      selectorSearch?.selectedAggs[props.agg]?.length > 0
+      !_.isEmpty(selectedAggsSelector) &&
+      selectedAggsSelector[props.agg]?.length > 0
     ) {
       //console.log("a: " + a);
-      return selectorSearch?.selectedAggs[props.agg]?.includes(a);
-    } else return false;
+      return selectedAggsSelector[props.agg]?.includes(a);
+    } else {
+      return false;
+    }
   };
 
   return (
