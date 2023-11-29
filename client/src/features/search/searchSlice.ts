@@ -2,7 +2,7 @@ import { Paper } from '@mui/material';
 import { fetchInit } from './../init/initSlice';
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store/store";
-import { ISearchState } from '../../../../shared/ISearchState';
+import { ISearchState, ISelectedAggs } from '../../../../shared/ISearchState';
 import { ISearchRequest } from '../../../../shared/ISearchRequest';
 import { ISearchResponse } from '../../../../shared/ISearchResponse';
 
@@ -15,35 +15,16 @@ const initialState: ISearchState = {
     total: 0,
     page: 0,
     size: 10,
-    selectedRowInGrid: 0
+    selectedRowInGrid: 0,
+    selectedAggs: {},
 }
-
-//GET
-// async (data) => {
-//     try {
-//         const url = import.meta.env.VITE_API_URL as string;
-//         const response = await axios.get(`${url}/search`)
-//         return response.data
-//     } catch (err) {
-//         // custom error
-//     }
-// }
 
 export const fetchSearch = createAsyncThunk(
     "search/fetchSearch",
 
     async (searchRequest: ISearchRequest) => {
         try {
-            // const searchRequest: ISearchRequest = {
-            //     page: searchReq.page,
-            //     size: searchReq.size,
-            //     selectedSubjects: searchReq.selectedSubjects,
-            //     term: searchReq.term
-
-            // };
-
             const url = import.meta.env.VITE_API_URL as string;
-
             const response = await axios.post(`${url}/search`, searchRequest as ISearchRequest)
             return response.data
         } catch (err) {
@@ -51,29 +32,6 @@ export const fetchSearch = createAsyncThunk(
         }
     }
 )
-
-// () => {
-
-
-//     // const url = import.meta.env.VITE_API_URL as string;
-//     // const res = fetch(`${url}/search`).then(data => data.json());
-//     // //  const res = fetch('https://dummyjson.com/products').then(data => data.json()).then(data => data.map((item: any) => item.name));
-//     // return res;
-// }
-
-
-// axios
-//     .post(url, data, {
-//         headers: {
-//             Accept: "application/json",
-//             "Content-Type": "application/json;charset=UTF-8",
-//         },
-//     })
-//     .then(({ data }) => {
-//         console.log(data);
-//     });
-
-
 
 const searchSlice = createSlice({
     name: 'search',
@@ -88,13 +46,30 @@ const searchSlice = createSlice({
             const key = action.payload;
             var existKey = state.selectedCities.indexOf(key);
             existKey ? state.selectedCities.push(key) : state.selectedCities.splice(existKey, 1);
-            console.log('subject : ' + action.payload);
+            console.log('checked : ' + action.payload);
+        },
+
+        setAggs: (state, action: PayloadAction<any>) => {
+            console.log('checked : ' + action.payload);
+            const val = action.payload.value;
+            const agg = action.payload.agg;
+
+            if (!state?.selectedAggs[agg] || state?.selectedAggs[agg].length == 0) {
+                state.selectedAggs[agg] = [val] as any;
+            }
+            else {
+                var existVal = state?.selectedAggs[agg].indexOf(val);
+                existVal < 0 ? state?.selectedAggs[agg].push(val) : state?.selectedAggs[agg].splice(existVal, 1);
+            }
+
+
         },
 
         clearAllAggs: (state) => {
             state.selectedCities = [];
+            state.selectedAggs
             state.term = '';
-            state.results = [];
+            //state.results = [];
         },
         setSelectedRow: (state, action: PayloadAction<number>) => {
             state.selectedRowInGrid = action.payload;
@@ -132,5 +107,36 @@ const searchSlice = createSlice({
 
 })
 export const SearchSelector = (state: RootState) => state.searchReducer;
-export const { setTerm, setCities, clearAllAggs, setSelectedRow } = searchSlice.actions;
+export const { setTerm, setCities, clearAllAggs, setSelectedRow, setAggs } = searchSlice.actions;
 export default searchSlice.reducer;
+
+
+// () => {
+
+
+//     // const url = import.meta.env.VITE_API_URL as string;
+//     // const res = fetch(`${url}/search`).then(data => data.json());
+//     // //  const res = fetch('https://dummyjson.com/products').then(data => data.json()).then(data => data.map((item: any) => item.name));
+//     // return res;
+// }
+// axios
+//     .post(url, data, {
+//         headers: {
+//             Accept: "application/json",
+//             "Content-Type": "application/json;charset=UTF-8",
+//         },
+//     })
+//     .then(({ data }) => {
+//         console.log(data);
+//     });
+
+//GET
+// async (data) => {
+//     try {
+//         const url = import.meta.env.VITE_API_URL as string;
+//         const response = await axios.get(`${url}/search`)
+//         return response.data
+//     } catch (err) {
+//         // custom error
+//     }
+// }

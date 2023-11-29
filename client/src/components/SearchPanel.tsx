@@ -25,6 +25,7 @@ import { makeStyles } from "@mui/styles";
 import { CitiesBox } from "./CitiesBox";
 import { ButtonsBar } from "./ButtonsBar";
 import { TermBox } from "./TermBox";
+import { MultiSelect } from "./MultiSelect";
 //import "./SearchPanel.css";
 
 function SearchPanel() {
@@ -59,8 +60,9 @@ function SearchPanel() {
 
           <TermBox></TermBox>
           <br />
-          <CitiesBox></CitiesBox>
-
+          {/* <CitiesBox></CitiesBox> */}
+          <MultiSelect title="ערים" agg="cities"></MultiSelect>
+          <MultiSelect title="דרגות" agg="ranks"></MultiSelect>
           <ButtonsBar></ButtonsBar>
         </FormControl>
       </div>
