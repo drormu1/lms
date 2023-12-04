@@ -37,7 +37,7 @@ export class SearchService {
       try {
         const indexName = Config.indexName;
         console.log('searchRequest:' , searchRequest)
-        const searchResponse : ISearchResponse = {results:[],total:0};
+        const searchResponse : ISearchResponse = {results:[],total:0, aggs : {}};
         
         searchRequest.term = _.trim( searchRequest.term);
         if( searchRequest.term.startsWith('"') && searchRequest.term.endsWith('"'))
@@ -68,7 +68,7 @@ export class SearchService {
                 "*": { "fragment_size": 100, "number_of_fragments": 5  }
               }
             },
-            //aggs: this.helper.getAggsStr(indexSettings.aggregation),
+            aggs: this.getAggsStr(),
             query: {
               bool: {     
                 minimum_should_match: 1        ,
@@ -81,29 +81,24 @@ export class SearchService {
           }
         },{ meta: true })
         .then(data=> {   
+
           //logger.info(data.meta.request.params.body);
           //Logger.info("***********");
           //console.log(data.meta.request.params.path);
           //console.log(data.meta.request.params.body);
           //logger.info(data);
-
-           
-        
             searchResponse.results=  data.body.hits.hits.map(h => { 
               return {
                 id:h._id,
                 name: h.fields.full_name_fd.length > 0 ? h.fields.full_name_fd[0] : '',
                 rank:h.fields.rank && h.fields.rank.length > 0 ? h.fields.rank[0] : '',
                 city: h.fields.birth_city && h.fields.birth_city.length > 0 ? h.fields.birth_city[0] : ''
-              }
-            
-
-            
-            });
+              }           
+            })as [];
             console.log('total :' ,searchResponse.total);
             const t =  data.body.hits.total as any ;
             searchResponse.total= t.value as number;
-          
+            searchResponse.aggs = data.body.aggregations;
             return searchResponse;
         })
         .catch(e=>{
@@ -126,7 +121,23 @@ export class SearchService {
       }
     };
 
+    getAggsStr()
+    {
+      let str='';
+      const aggregations : string[] = Config.aggregations
 
+      aggregations.forEach(f => {
+        let isKeyword  = true;                             
+         str += `"aggs_${f}":{"terms":{"field":"${f}.keyword","size":1000}},`;
+       })
+       //str += this.getTotalAmountRangeAggregation();
+       //str += this.getPurchasedAtRangeAggregation();
+
+       str = str.slice(0,-1);
+       return JSON.parse(`{${str}}`);
+       
+      
+    }
     
     getQuery(searchRequest)
     {    

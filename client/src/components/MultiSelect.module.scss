@@ -6,6 +6,15 @@
   padding:0px  !important;
  // font-weight:normal !important;
 }
+.aggCount
+{
+  font-size:0.85em;
+  transform: scale(0.75);
+  padding:0px  !important;
+  font-weight:normal !important;
+  float: left;
+}
+
 .aggsGroupBox {
   display: flex;
   color:rgba(0, 0, 0, 0.74);

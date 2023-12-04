@@ -44,7 +44,7 @@ export class InitService {
        
   async getAllAggregations() : Promise<any> {
 
-    const results = {cities:[],ranks:[]}; 
+    const results = {birth_city:[],rank:[]}; 
  
     const data = await this.client.search({
           index: Config.indexName,
@@ -55,8 +55,8 @@ export class InitService {
         },{ meta: true }) 
         .then(data=> { 
           const aggs=  data.body.aggregations as  any;
-          results.cities =aggs?.birth_city?.buckets.map(a=>a.key).sort()  
-          results.ranks =aggs?.rank?.buckets.map(a=>a.key)
+          results.birth_city =aggs?.birth_city?.buckets.map(a=>a.key).sort()  
+          results.rank =aggs?.rank?.buckets.map(a=>a.key)
           
         })
         .catch(e=>{

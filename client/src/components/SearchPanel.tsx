@@ -61,8 +61,8 @@ function SearchPanel() {
           <TermBox></TermBox>
           <br />
           {/* <CitiesBox></CitiesBox> */}
-          <MultiSelect title="ערים" agg="cities"></MultiSelect>
-          <MultiSelect title="דרגות" agg="ranks"></MultiSelect>
+          <MultiSelect title="ערים" agg="birth_city"></MultiSelect>
+          <MultiSelect title="דרגות" agg="rank"></MultiSelect>
           <ButtonsBar></ButtonsBar>
         </FormControl>
       </div>

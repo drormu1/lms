@@ -6,7 +6,8 @@ export interface ISearchState {
     term: string;
     page: number;
     size: number;
-    results: []
+    results: [];
+    aggs: {};
     selectedRowInGrid: string;
     selectedAggs: ISelectedAggs;
 }

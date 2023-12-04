@@ -8,7 +8,12 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { AsyncThunkAction, Dispatch, AnyAction } from "@reduxjs/toolkit";
 import { Checkbox, TextField } from "@mui/material";
 import styles from "./MultiSelect.module.scss";
-import { SelectedAggsSelector, setAggs } from "../features/search/searchSlice";
+import {
+  AggsSelector,
+  ResultsSelector,
+  SelectedAggsSelector,
+  setAggs,
+} from "../features/search/searchSlice";
 import { getGridSingleSelectOperators } from "@mui/x-data-grid";
 import _ from "lodash";
 
@@ -16,7 +21,8 @@ export function MultiSelect(props: any) {
   //const [metadata, setMetadata] = useState<Array<User>>([]);
   const selectorMetadata = useAppSelector(metadataSelector);
   const selectedAggsSelector = useAppSelector(SelectedAggsSelector);
-
+  const aggsSelector = useAppSelector(AggsSelector);
+  const resultSelector = useAppSelector(ResultsSelector);
   const dispatch = useAppDispatch();
 
   const [minifier, setMinifer] = useState<string>("");
@@ -53,6 +59,16 @@ export function MultiSelect(props: any) {
     }
   };
 
+  const getSingle = (a: string) => {
+    if (_.isEmpty(aggsSelector) || _.isEmpty(resultSelector)) return a;
+    //const agg = aggsSelector["aggs_"].find((agg: any) => agg.key === a);
+    const agg =
+      aggsSelector["aggs_" + props.agg].buckets.find(
+        (agg: any) => agg.key === a
+      )?.doc_count ?? "";
+    return agg;
+  };
+
   return (
     <>
       <div>
@@ -87,6 +103,7 @@ export function MultiSelect(props: any) {
                   onChange={(e) => onChange(e)}
                 />
                 {a}
+                <span className={styles.aggCount}>{getSingle(a)}</span>
               </div>
             ))}
         </Box>

@@ -14,6 +14,7 @@ import { BaseThunkAPI, GetThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThun
 const initialState: ISearchState = {
     results: [],
     term: "כהן",
+    aggs: {},
 
     total: 0,
     page: 0,
@@ -92,6 +93,7 @@ const searchSlice = createSlice({
             //state.loading = false;
             state.results = action.payload.results;
             state.total = action.payload.total;
+            state.aggs = action.payload.aggs;
         });
         builder.addCase(fetchSearch.rejected, (state, action) => {
 
@@ -106,6 +108,9 @@ const searchSlice = createSlice({
 })
 export const ResultsSelector = (state: RootState) => state.search.results;
 export const TotalSelector = (state: RootState) => state.search.total;
+export const AggsSelector = (state: RootState) => state.search.aggs;
+
+
 export const PageSelector = (state: RootState) => state.search.page;
 export const SizeSelector = (state: RootState) => state.search.size;
 export const SelectedRowSelector = (state: RootState) => state.search.selectedRowInGrid;
