@@ -18,7 +18,7 @@ export class SearchService {
   readonly fields : string[] = Config.fields
 
   readonly client = new Client({
-    node: Config.elasticUrl,
+    node: process.env.ELASTIC_URL,
     requestTimeout: 60000,
   });
   
@@ -47,9 +47,9 @@ export class SearchService {
         }
   
   
-  //     var mustArrays = this.helper.appenedRoles(searchRequest,roleIds).
-  //                      concat(this.helper.appenedAggs(searchRequest)).
-   //                     concat(this.helper.appenedSpecialAggregations(searchRequest));
+      var mustArrays = this.appenedAggs(searchRequest);
+                       
+                       
        
         const results = await this.client.search({
           index: indexName,
@@ -73,7 +73,7 @@ export class SearchService {
               bool: {     
                 minimum_should_match: 1        ,
                 should: this.getQuery(searchRequest),
-                //must:mustArrays,
+                must:mustArrays,
                 
               }
             }
@@ -120,6 +120,34 @@ export class SearchService {
         return err;
       }
     };
+
+
+    appenedAggs(searchRequest:ISearchRequest)
+    {
+      var arr = []; 
+      let activeAggsFileds = [];
+
+      const indexName:string = Config.indexName;
+     
+      const selelctedAggs = searchRequest.selectedAggs;
+      
+      const configAggs = Config.aggregations;
+      configAggs.forEach(aggregation => {
+          const aggsOfField = selelctedAggs[aggregation];                  
+          if(aggsOfField?.length == 1)
+          {
+            arr.push(JSON.parse(`{"term":{"${aggregation}.keyword":"${aggsOfField[0]}"}}`)); 
+          }
+          else if (aggsOfField?.length > 1)
+          {
+          const values =  aggsOfField.map(f => f);
+          arr.push(JSON.parse(`{"terms":{"${aggregation}.keyword":["${values.join('","')}"]}}`));           
+          }
+       console.log(arr);
+      }); 
+         
+      return arr;    
+    }
 
     getAggsStr()
     {

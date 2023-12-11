@@ -13,6 +13,7 @@ import {
   ResultsSelector,
   SelectedAggsSelector,
   setAggs,
+  TotalSelector,
 } from "../features/search/searchSlice";
 import { getGridSingleSelectOperators } from "@mui/x-data-grid";
 import _ from "lodash";
@@ -23,6 +24,7 @@ export function MultiSelect(props: any) {
   const selectedAggsSelector = useAppSelector(SelectedAggsSelector);
   const aggsSelector = useAppSelector(AggsSelector);
   const resultSelector = useAppSelector(ResultsSelector);
+
   const dispatch = useAppDispatch();
 
   const [minifier, setMinifer] = useState<string>("");
@@ -59,14 +61,14 @@ export function MultiSelect(props: any) {
     }
   };
 
-  const getSingle = (a: string) => {
-    if (_.isEmpty(aggsSelector) || _.isEmpty(resultSelector)) return a;
+  const getCount = (a: string) => {
+    if (_.isEmpty(aggsSelector) || _.isEmpty(resultSelector)) return "";
     //const agg = aggsSelector["aggs_"].find((agg: any) => agg.key === a);
-    const agg =
-      aggsSelector["aggs_" + props.agg].buckets.find(
-        (agg: any) => agg.key === a
-      )?.doc_count ?? "";
-    return agg;
+    const count = aggsSelector["aggs_" + props.agg].buckets.find(
+      (agg: any) => agg.key === a
+    )?.doc_count;
+    if (count == null || count == 0) return "";
+    return `(${count})`;
   };
 
   return (
@@ -103,7 +105,7 @@ export function MultiSelect(props: any) {
                   onChange={(e) => onChange(e)}
                 />
                 {a}
-                <span className={styles.aggCount}>{getSingle(a)}</span>
+                <span className={styles.aggCount}>{getCount(a)}</span>
               </div>
             ))}
         </Box>

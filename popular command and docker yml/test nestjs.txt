@@ -1,0 +1,19 @@
+npm run start:dev
+
+
+http://localhost:3000/444
+
+http://localhost:3000/events
+
+###  curl -s -H "Content-Type: application/json" -XPOST 'http://localhost:9200/_bulk' --data-binary "@/users.json"
+
+
+docker pull mcr.microsoft.com/mssql/server
+
+docker ps -a
+docker image ls 
+
+docker stop GUID
+docker rm GUID
+
+

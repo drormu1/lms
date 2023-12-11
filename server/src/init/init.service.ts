@@ -11,7 +11,7 @@ export class InitService {
   constructor(private readonly elasticsearchService: ElasticsearchService) {}
 
   readonly client = new Client({
-    node: Config.elasticUrl,
+    node: process.env.ELASTIC_URL,
     requestTimeout: 60000,
   });
 

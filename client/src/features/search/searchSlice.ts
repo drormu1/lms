@@ -10,6 +10,7 @@ import { ISearchResponse } from '../../../../shared/ISearchResponse';
 import axios from 'axios';
 import { ConstructionOutlined } from '@mui/icons-material';
 import { BaseThunkAPI, GetThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk';
+import { Config } from '../../../../shared/Config';
 
 const initialState: ISearchState = {
     results: [],
@@ -18,7 +19,7 @@ const initialState: ISearchState = {
 
     total: 0,
     page: 0,
-    size: 100,
+    size: 1000,
     selectedRowInGrid: '',
     selectedAggs: {},
 
@@ -56,6 +57,11 @@ const searchSlice = createSlice({
             state.term = action.payload;
         },
 
+        setPaginationData: (state, action: PayloadAction<any>) => {
+            console.log('setPaginationModel : ' + action.payload);
+            state.page = action.payload.page;
+            state.size = action.payload.pageSize;
+        },
 
         setAggs: (state, action: PayloadAction<any>) => {
             console.log('checked : ' + action.payload);
@@ -77,7 +83,9 @@ const searchSlice = createSlice({
 
             state.selectedAggs = {};
             state.term = '';
-            //state.results = [];
+            state.results = [];
+            state.size = Config.pageSize;
+            state.page = 0;
         },
         setSelectedRow: (state, action: PayloadAction<string>) => {
             state.selectedRowInGrid = action.payload;
@@ -118,7 +126,7 @@ export const SelectedAggsSelector = (state: RootState) => state.search.selectedA
 export const TermSelector = (state: RootState) => state.search.term;
 
 //export const SearchSelector = (state: RootState) => state.searchReducer;
-export const { setTerm, clearAllAggs, setSelectedRow, setAggs } = searchSlice.actions;
+export const { setTerm, clearAllAggs, setSelectedRow, setAggs, setPaginationData } = searchSlice.actions;
 export default searchSlice.reducer;
 
 

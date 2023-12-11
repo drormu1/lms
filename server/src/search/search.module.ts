@@ -8,7 +8,7 @@ import { Config } from '../../../shared/Config';
   controllers: [SearchController],
   providers: [SearchService],
   imports: [ElasticsearchModule.register({
-    node: Config.elasticUrl,
+    node: process.env.ELASTIC_URL,
   })],
   
 })
